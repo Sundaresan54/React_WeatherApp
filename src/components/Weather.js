@@ -1,6 +1,6 @@
 import React, { Component }  from 'react';
 import Request from "superagent";
-import { Button, Form} from 'react-bootstrap'
+import Cards from './DashBoardCard'
 
 class Weather extends Component {
 
@@ -20,9 +20,10 @@ class Weather extends Component {
         .end((err,res) => {
             if(err) return err;
             else{
-                this.setState({weatherData:res});
+                this.setState({weatherData:res,city:''});
                 console.log(this.state.weatherData.body.list,"data getting");
                 this.dataModify();
+                
             }
         })
 
@@ -52,38 +53,26 @@ class Weather extends Component {
         let todayCounter = 0;
         // For finding today's counter -------------------------------------------
         
-        var temperatureDay1 = 0;
-        var weatherDay1 = '' ;
-        var descriptionday1 = '';
-        var temp = '';
-        var dat = '';
+        var temperatureDay = 0; 
         var arr = [];
-       
-        var id = '';
-        // var obj1={};
-        var arr1=[];
         console.log(this.state.weatherData.body.list,"list")
         for (var i = 0; i < this.state.weatherData.body.list.length; i++) {
         
-            if(this.state.weatherData.body.list[i].dt_txt.search(finalDate) == 0)
+            if(this.state.weatherData.body.list[i].dt_txt.search(finalDate) === 0)
             {
               todayCounter++;
               
                console.log("===================>",todayCounter);
-            //    obj.id = day;
+            
             var obj = {};
-              temperatureDay1 += this.state.weatherData.body.list[i].main.temp;
-              obj.weatherDay1 = this.state.weatherData.body.list[i].weather[0].main;
-              obj.descriptionday1 = this.state.weatherData.body.list[i].weather[0].description;    
-              obj.temp =  Math.round((temperatureDay1/todayCounter)-273.15) + "°C";
-              
-              obj.dat = this.state.weatherData.body.list[i].dt_txt.substring(0,10);
-              
-              
+            obj.dat = this.state.weatherData.body.list[i].dt_txt.substring(0,10);
+              temperatureDay += this.state.weatherData.body.list[i].main.temp;
+              obj.weatherDay = this.state.weatherData.body.list[i].weather[0].main;
+              obj.descriptionday = this.state.weatherData.body.list[i].weather[0].description;    
+              obj.temp =  Math.round((temperatureDay/todayCounter)-273.15) + "°C";     
             }
             else{
-                arr.push(obj);
-                
+                arr.push(obj);   
                 console.log("-------------------",arr);
               break;
             }  
@@ -93,20 +82,12 @@ class Weather extends Component {
          
        
           
-          if(day!=1) {
-              console.log("jello")
-              var tok = 8;
+          if(day!==1) {
                 for(day = 2; day <= 5;){
               var obj1= {};
-
-                    console.log("dayyyyyyyyyyyyyy", day)
-                    var id = day;
-      var temperatureDay = 0;
-      temp = "";
-      var weatherDay = '';
-      var descriptionDay = '';
-
-          for (var i = todayCounter; i < todayCounter + 8; i++) {
+              var temperatureDay =0;
+     
+          for (i = todayCounter; i < todayCounter + 8; i++) {
               
         temperatureDay += this.state.weatherData.body.list[i].main.temp;        
        
@@ -116,17 +97,20 @@ class Weather extends Component {
          obj1.weatherDay = this.state.weatherData.body.list[todayCounter].weather[0].main;
          obj1.descriptionday = this.state.weatherData.body.list[todayCounter].weather[0].description;       
              
-          obj1.temp = Math.round((temperatureDay/8) -273.15)+ "°C";
+          obj1.temp = Math.round((temperatureDay/8)-273.15)+ "°C";
           todayCounter+=8;
           arr.push(obj1);
           console.log(arr,"final")
-          day++
+          day++;
+          this.setState({data:arr});
+          console.log(this.state.data,"-------------->>>>.")
         }
         
   }
-          
+      
     }
- render() {     
+ render() {    
+    
   return (
     <div className="main">
         <form> 
@@ -137,7 +121,15 @@ class Weather extends Component {
   </div>
   
   <button type="button" className="btn btn-primary" onClick = {this.handle} >Search</button>
-</form>      
+</form>  
+
+<div>
+    
+{this.state.data!=null ? this.state.data.map((item,i)=>{
+    return  <Cards date = {item.dat} temperature = {item.temp} description = {item.description} climate = {item.weatherDay1} />
+
+}):null}
+</div>
     </div>
   );
 }
