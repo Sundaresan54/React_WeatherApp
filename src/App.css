@@ -11,7 +11,7 @@
 .App-header {
   background-color: #282c34;
   height: 700px;
-  display: flex;
+  display: block;
   flex-direction: column;
   align-items: center;
  
@@ -23,3 +23,11 @@
   color: #61dafb;
 }
 
+.left{
+  float:left;
+}
+
+.centerq {
+  display: inline-table;
+  padding-top: 20px;
+}

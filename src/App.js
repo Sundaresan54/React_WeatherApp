@@ -5,11 +5,9 @@ import Weather from './components/Weather'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-      Weather App
+    <div className="App" style = {{backgroundColor:"#D3D3D3",height:"auto"}}>
       <Weather />
-      </header>
+     
     </div>
   );
 }
