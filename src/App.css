@@ -31,3 +31,9 @@
   display: inline-table;
   padding-top: 20px;
 }
+
+.iconAlign{
+  float: right;
+  margin-right: 150px;
+  margin-top:27px;
+}

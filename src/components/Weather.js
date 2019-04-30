@@ -1,7 +1,8 @@
 import React, { Component }  from 'react';
 import Request from "superagent";
 import Cards from './DashBoardCard'
-import DasboardCard from './DashBoardCard';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 
 
@@ -12,7 +13,8 @@ class Weather extends Component {
     this.state = {
         city :'',
         weatherData:'',
-        data : []
+        data : [],
+        location:""
     }
     }
     getWeatherData(city) {
@@ -20,7 +22,7 @@ class Weather extends Component {
         .end((err,res) => {
             if(err) return err;
             else{
-                this.setState({weatherData:res,city:""});
+                this.setState({weatherData:res});
                 this.dataModify();    
             }
         });
@@ -68,7 +70,7 @@ class Weather extends Component {
             for(day = 2; day <= 5;)
             {
               var obj1= {};
-              var temperatureDay =0;     
+              var temperatureDay = 0;     
                 for (i = todayCounter; i < todayCounter + 8; i++) {        
                  temperatureDay += this.state.weatherData.body.list[i].main.temp;        
              }  
@@ -84,13 +86,25 @@ class Weather extends Component {
             day++;
             this.setState({data:arr});
         }     
-      } 
+      }
+      if(this.state.city!== null){
+        var loc = ""
+        loc = this.state.city;
+        this.setState({location:loc,city:""})
+      }
     }
  render() {    
   return (
     <div>
-            <nav style = {{backgroundColor:" grey",height:"auto"}}>
+            <nav style = {{backgroundColor:" grey",height:"50px"}}>
+            {this.state.location?<div className = "row iconAlign">
+            <FontAwesomeIcon icon="map-marker-alt" />
+             <h2 style = {{marginTop:"-15px",marginLeft:"5px"}} >{this.state.location}</h2>
+            
+            </div>:null}
+           
               <h2>WeatherApp</h2>
+          
               
             </nav>
           <br />
